@@ -1,30 +1,50 @@
 spring:
   application:
     name: realTalk
-  datasource:
-    url: "jdbc:mysql://localhost:3307/realTalk_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useUnicode=tr&characterEncoding=UTF-8&characterSetResults=UTF-8"
-    username: "appuser"
-    password: app123
-    driver-class-name: "com.mysql.cj.jdbc.Driver"
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
+  jackson:
+    default-property-inclusion: non_null
+    spring:
+      jackson:
+        datatype:
+          datetime:
+            write-dates-as-timestamps: false
+
   jpa:
+    open-in-view: false
     hibernate:
-      ddl-auto: "update"
-    show-sql: true
-    database-platform: "org.hibernate.dialect.MySQLDialect"
+      ddl-auto: validate
     properties:
       hibernate:
-        connection:
-          CharSet: "UTF-8"
-          characterEncoding: "UTF-8"
-          useUnicode: true
-  spring doc:
-    api-docs:
-      path: /api-docs
-    swagger-ui:
-      path: /swagger-ui.html
-      operations-sorter: method
-    logging:
-      level:
-        com.usermanagement: DEBUG
-        org.springframework.data.elasticsearch: WARN
-        org.elasticsearch.client: WARN
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+
+server:
+  port: ${SERVER_PORT:8080}
+
+  error:
+    include-message: never
+    include-stacktrace: never
+    include-binding-errors: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    root: INFO
+    com.chatBox.realTalk: DEBUG
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
