@@ -7,11 +7,6 @@ spring:
 
   jackson:
     default-property-inclusion: non_null
-    spring:
-      jackson:
-        datatype:
-          datetime:
-            write-dates-as-timestamps: false
 
   jpa:
     open-in-view: false
@@ -40,6 +35,22 @@ management:
   endpoint:
     health:
       show-details: always
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+    disable-swagger-default-url: true
+
+  packages-to-scan: com.chatBox.realTalk
+  paths-to-match: /api/**
 
 logging:
   level:

@@ -38,6 +38,7 @@ backend/src/main/resources/application-local.properties
 backend/src/main/resources/application-local.yml
 backend/src/main/resources/application-secret.properties
 backend/src/main/resources/application-secret.yml
+backend/src/main/resources/db
 
 # =========================
 # IDE
@@ -92,3 +93,6 @@ backend/target/surefire-reports/
 *.swo
 *.bak
 *.tmp
+
+
+taiLieu/
