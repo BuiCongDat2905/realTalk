@@ -1,4 +1,4 @@
-package com.chatBox.realTalk.exception;
+package com.chatBox.realTalk.base.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

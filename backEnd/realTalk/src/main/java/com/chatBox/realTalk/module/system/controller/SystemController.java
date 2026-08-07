@@ -1,6 +1,6 @@
-package com.chatBox.realTalk.system.controller;
+package com.chatBox.realTalk.module.system.controller;
 
-import com.chatBox.realTalk.response.ApiResponse;
+import com.chatBox.realTalk.base.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,14 +27,14 @@ public class SystemController {
     }
 
     @GetMapping("/profile")
-    public Map<String, Object> getProfile() {
-        return Map.of(
-                "activeProfiles",
-                Arrays.asList(environment.getActiveProfiles()),
-
-                "defaultProfiles",
-                Arrays.asList(environment.getDefaultProfiles())
+    public ApiResponse<Map<String, Object>> getProfile() {
+        Map<String, Object> data = Map.of(
+                "application", applicationName,
+                "activeProfiles", Arrays.asList(environment.getActiveProfiles()),
+                "defaultProfiles", Arrays.asList(environment.getDefaultProfiles()),
+                "timestamp", Instant.now()
         );
+        return ApiResponse.success(data);
     }
 
     @GetMapping("/health")

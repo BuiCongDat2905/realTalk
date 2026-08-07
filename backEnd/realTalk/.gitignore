@@ -1,14 +1,14 @@
 # =========================
 # Spring Boot / Java
 # =========================
-backend/target/
-backend/build/
+target/
+build/
 *.class
 *.jar
 *.war
 *.ear
 
-# Maven Wrapper JAR vẫn nên được commit
+# Maven Wrapper JAR should be committed
 !.mvn/wrapper/maven-wrapper.jar
 
 # Gradle
@@ -34,11 +34,8 @@ pnpm-debug.log*
 .env.*
 !.env.example
 
-backend/src/main/resources/application-local.properties
-backend/src/main/resources/application-local.yml
-backend/src/main/resources/application-secret.properties
-backend/src/main/resources/application-secret.yml
-backend/src/main/resources/db
+src/main/resources/application-local.yml
+src/main/resources/application-secret.yml
 
 # =========================
 # IDE
@@ -49,6 +46,9 @@ backend/src/main/resources/db
 .settings/
 .classpath
 .project
+
+# Flyway migration SQL (managed separately or regenerated)
+src/main/resources/db/
 
 # =========================
 # Operating System
@@ -67,29 +67,23 @@ logs/
 # Uploads / Runtime data
 # =========================
 uploads/
-storage/
 data/
 tmp/
-temp/
-
-# =========================
-# Docker runtime data
-# =========================
-mysql-data/
-redis-data/
-minio-data/
 
 # =========================
 # Test / Coverage
 # =========================
 coverage/
-frontend/coverage/
-backend/target/surefire-reports/
+target/surefire-reports/
 
 # =========================
 # Miscellaneous
 # =========================
 *.swp
-*.swo
 *.bak
 *.tmp
+
+# =========================
+# Project docs
+# =========================
+taiLieu/

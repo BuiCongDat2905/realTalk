@@ -23,7 +23,7 @@
 	<description>RealTalk chat application backend</description>
 
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 		<springdoc.version>3.0.3</springdoc.version>
 	</properties>
 

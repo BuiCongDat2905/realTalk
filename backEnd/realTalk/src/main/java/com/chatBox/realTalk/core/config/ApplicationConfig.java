@@ -1,4 +1,4 @@
-package com.chatBox.realTalk.config;
+package com.chatBox.realTalk.core.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

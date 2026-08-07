@@ -1,4 +1,4 @@
-package com.chatBox.realTalk.config;
+package com.chatBox.realTalk.core.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

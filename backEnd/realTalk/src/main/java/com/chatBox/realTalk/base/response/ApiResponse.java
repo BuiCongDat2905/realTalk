@@ -1,4 +1,4 @@
-package com.chatBox.realTalk.response;
+package com.chatBox.realTalk.base.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
