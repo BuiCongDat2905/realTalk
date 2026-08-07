@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: realtalk-core
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3307}/${DB_NAME:realTalk_db}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    username: ${DB_USERNAME:appuser}
+    password: ${DB_PASSWORD:app123}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    hikari:
+      pool-name: RealTalkHikariPool
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  jpa:
+    show-sql: true
+
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+    validate-on-migrate: true
+    clean-disabled: true
+
+logging:
+  level:
+    com.chatBox.realTalk: DEBUG
+
+    org:
+      hibernate:
+        SQL: DEBUG
