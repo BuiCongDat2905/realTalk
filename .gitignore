@@ -1,0 +1,27 @@
+# =========================
+# Project folders
+# =========================
+taiLieu/
+backEnd/target/
+backEnd/realtalk_base/target/
+backEnd/realtalk_core/target/
+
+# =========================
+# IDE
+# =========================
+.idea/
+*.iml
+.vscode/
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Secrets
+# =========================
+.env
+*.log
