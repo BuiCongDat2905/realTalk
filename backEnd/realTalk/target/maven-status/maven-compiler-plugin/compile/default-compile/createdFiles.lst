@@ -1,0 +1,17 @@
+com\chatBox\realTalk\exception\ErrorCode.class
+com\chatBox\realTalk\identity\entity\UserSession.class
+com\chatBox\realTalk\response\ApiResponse.class
+com\chatBox\realTalk\config\JpaAuditingConfig.class
+com\chatBox\realTalk\constant\ApiConstants.class
+com\chatBox\realTalk\exception\AppException.class
+com\chatBox\realTalk\exception\GlobalExceptionHandler.class
+com\chatBox\realTalk\system\controller\SystemController.class
+com\chatBox\realTalk\config\ActiveProfileLogger.class
+com\chatBox\realTalk\module\identity\entity\UserSession.class
+com\chatBox\realTalk\config\ApplicationConfig.class
+com\chatBox\realTalk\identity\entity\OAuthAccount.class
+com\chatBox\realTalk\response\ApiErrorResponse.class
+com\chatBox\realTalk\base\BaseEntity.class
+com\chatBox\realTalk\util\PaginationUtils.class
+com\chatBox\realTalk\RealTalkApplication.class
+com\chatBox\realTalk\module\identity\entity\OAuthAccount.class
