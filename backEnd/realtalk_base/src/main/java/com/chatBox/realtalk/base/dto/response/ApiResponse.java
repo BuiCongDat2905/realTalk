@@ -1,10 +1,12 @@
 package com.chatBox.realtalk.base.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 
 import java.time.Instant;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Builder
 public record ApiResponse<T>(
         boolean success,
         String message,
@@ -31,4 +33,5 @@ public record ApiResponse<T>(
     public static ApiResponse<Void> fail(String message) {
         return new ApiResponse<>(false, message, null, Instant.now());
     }
+
 }

@@ -1,0 +1,10 @@
+logging:
+  level:
+    root: DEBUG
+    com.chatBox.realtalk: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.boot.autoconfigure: INFO
+
+spring:
+  profiles: local

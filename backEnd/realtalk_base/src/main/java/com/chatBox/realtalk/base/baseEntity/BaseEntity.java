@@ -1,12 +1,6 @@
-package com.chatBox.realtalk.base.entity;
+package com.chatBox.realtalk.base.baseEntity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,9 +21,6 @@ import java.time.Instant;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -39,7 +30,27 @@ public abstract class BaseEntity {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+
     @Version
     @Column(name = "version", nullable = false)
     private Long version = 0L;
+
+    @PrePersist
+    protected void prePersist() {
+        Instant now = Instant.now();
+
+        if (createdAt == null) {
+            createdAt = now;
+        }
+
+        if (updatedAt == null) {
+            updatedAt = now;
+        }
+    }
+
+    @PreUpdate
+    protected void preUpdate() {
+        updatedAt = Instant.now();
+    }
 }
+

@@ -1,0 +1,12 @@
+logging:
+  level:
+    root: INFO
+    com.chatBox.realtalk: INFO
+    org.springframework.web: WARN
+    org.springframework.boot.autoconfigure: WARN
+    org.springframework.jdbc: WARN
+    org.hibernate.SQL: WARN
+    org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: ERROR
+
+spring:
+  profiles: prod
