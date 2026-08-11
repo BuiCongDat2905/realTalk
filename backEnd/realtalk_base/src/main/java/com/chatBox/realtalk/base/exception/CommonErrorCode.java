@@ -42,6 +42,11 @@ public enum CommonErrorCode implements ErrorCode {
             "Hệ thống đang gặp sự cố.",
             HttpStatus.INTERNAL_SERVER_ERROR,
             ErrorType.SYSTEM_ERROR
+    ),INVALID_ENUM_VALUE(
+            "BASE-VAL-003",
+            "Giá trị enum không hợp lệ.",
+            HttpStatus.BAD_REQUEST,
+            ErrorType.VALIDATION_ERROR
     );
 
     private final String code;

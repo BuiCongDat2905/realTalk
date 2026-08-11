@@ -63,7 +63,8 @@ public enum IdentityErrorCode implements ErrorCode {
             "Username đã tồn tại.",
             HttpStatus.CONFLICT,
             ErrorType.BUSINESS_ERROR
-    );
+    )
+    ;
 
     private final String code;
     private final String message;

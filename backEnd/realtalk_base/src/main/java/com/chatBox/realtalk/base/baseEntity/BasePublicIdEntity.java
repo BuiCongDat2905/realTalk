@@ -9,12 +9,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.UUID;
 
+@Slf4j
 @Getter
 @Setter
 @SuperBuilder
@@ -33,7 +35,8 @@ public abstract class BasePublicIdEntity extends BaseEntity {
     )
     private UUID publicId;
 
-    protected void generatePublicId() {
+    @Override
+    protected void onPrePersist() {
         if (publicId == null) {
             publicId = UUID.randomUUID();
         }

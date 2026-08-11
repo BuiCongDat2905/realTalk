@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import tools.jackson.databind.exc.InvalidFormatException;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -102,23 +104,23 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApiErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-                                                                        HttpServletRequest request) {
-        String traceId = getOrCreateTraceId(request);
-        log.warn("{} {} - [BASE-VAL-001] Request body không đọc được.", request.getMethod(), request.getRequestURI());
-
-        return ResponseEntity.badRequest()
-                .body(ApiErrorResponse.builder()
-                        .success(false)
-                        .code(CommonErrorCode.INVALID_REQUEST.getCode())
-                        .type(ErrorType.VALIDATION_ERROR.name())
-                        .message("Request body không hợp lệ hoặc không thể giải mã JSON.")
-                        .path(request.getRequestURI())
-                        .timestamp(Instant.now())
-                        .traceId(traceId)
-                        .build());
-    }
+//    @ExceptionHandler(HttpMessageNotReadableException.class)
+//    public ResponseEntity<ApiErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+//                                                                        HttpServletRequest request) {
+//        String traceId = getOrCreateTraceId(request);
+//        log.warn("{} {} - [BASE-VAL-001] Request body không đọc được.", request.getMethod(), request.getRequestURI());
+//
+//        return ResponseEntity.badRequest()
+//                .body(ApiErrorResponse.builder()
+//                        .success(false)
+//                        .code(CommonErrorCode.INVALID_REQUEST.getCode())
+//                        .type(ErrorType.VALIDATION_ERROR.name())
+//                        .message("Request body không hợp lệ hoặc không thể giải mã JSON.")
+//                        .path(request.getRequestURI())
+//                        .timestamp(Instant.now())
+//                        .traceId(traceId)
+//                        .build());
+//    }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ApiErrorResponse> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
@@ -231,5 +233,52 @@ public class GlobalExceptionHandler {
     private String getOrCreateTraceId(HttpServletRequest request) {
         String traceId = request.getHeader("X-Trace-Id");
         return (traceId == null || traceId.isBlank()) ? UUID.randomUUID().toString() : traceId;
+    }@ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+                                                                         HttpServletRequest request) {
+        String traceId = getOrCreateTraceId(request);
+
+        // ── Nhánh 1: Client gửi enum value không hợp lệ ──
+        if (ex.getCause() instanceof InvalidFormatException ife) {
+            if (ife.getTargetType() != null && ife.getTargetType().isEnum()) {
+                String value = String.valueOf(ife.getValue());
+                Object[] acceptedValues = ife.getTargetType().getEnumConstants();
+
+                log.warn("{} {} - [BASE-VAL-003] Enum không hợp lệ: '{}' cho kiểu {}. Chấp nhận: {}",
+                        request.getMethod(), request.getRequestURI(),
+                        value, ife.getTargetType().getSimpleName(),
+                        Arrays.toString(acceptedValues));
+
+                return ResponseEntity.badRequest()
+                        .body(ApiErrorResponse.builder()
+                                .success(false)
+                                .code(CommonErrorCode.INVALID_ENUM_VALUE.getCode())
+                                .type(ErrorType.VALIDATION_ERROR.name())
+                                .message("Giá trị '" + value
+                                        + "' không hợp lệ cho "
+                                        + ife.getTargetType().getSimpleName()
+                                        + ". Chỉ chấp nhận: "
+                                        + Arrays.toString(acceptedValues))
+                                .path(request.getRequestURI())
+                                .timestamp(Instant.now())
+                                .traceId(traceId)
+                                .build());
+            }
+        }
+
+        // ── Nhánh 2: JSON sai định dạng nói chung ──
+        log.warn("{} {} - [BASE-VAL-001] Request body không đọc được.",
+                request.getMethod(), request.getRequestURI());
+
+        return ResponseEntity.badRequest()
+                .body(ApiErrorResponse.builder()
+                        .success(false)
+                        .code(CommonErrorCode.INVALID_REQUEST.getCode())
+                        .type(ErrorType.VALIDATION_ERROR.name())
+                        .message("Request body không hợp lệ hoặc không thể giải mã JSON.")
+                        .path(request.getRequestURI())
+                        .timestamp(Instant.now())
+                        .traceId(traceId)
+                        .build());
     }
 }

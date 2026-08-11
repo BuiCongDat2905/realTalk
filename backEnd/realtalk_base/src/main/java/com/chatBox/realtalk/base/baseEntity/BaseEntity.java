@@ -46,11 +46,16 @@ public abstract class BaseEntity {
         if (updatedAt == null) {
             updatedAt = now;
         }
+        onPrePersist();
     }
 
     @PreUpdate
     protected void preUpdate() {
         updatedAt = Instant.now();
+    }
+
+    protected void onPrePersist() {
+
     }
 }
 
