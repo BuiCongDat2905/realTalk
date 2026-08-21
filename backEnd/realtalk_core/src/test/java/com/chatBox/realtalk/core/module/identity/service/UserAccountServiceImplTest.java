@@ -1,14 +1,14 @@
 package com.chatBox.realtalk.core.module.identity.service;
 
 import com.chatBox.realtalk.base.exception.AppException;
-import com.chatBox.realtalk.base.exception.ErrorCode;
 import com.chatBox.realtalk.core.module.identity.dto.request.RegisterReq;
 import com.chatBox.realtalk.core.module.identity.dto.response.RegisterRes;
 import com.chatBox.realtalk.core.module.identity.entity.UserAccount;
 import com.chatBox.realtalk.core.module.identity.enums.IdentityErrorCode;
 import com.chatBox.realtalk.core.module.identity.enums.UserStatus;
+import com.chatBox.realtalk.core.module.identity.repository.AuthenticationRepository;
 import com.chatBox.realtalk.core.module.identity.repository.UserAccountRepository;
-import com.chatBox.realtalk.core.module.identity.service.Impl.UserAccountServiceImpl;
+import com.chatBox.realtalk.core.module.identity.service.Impl.AuthenticationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -18,7 +18,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -39,7 +38,7 @@ class UserAccountServiceImplTest {
     private UserAccountRepository userAccountRepository;
 
     @InjectMocks
-    private UserAccountServiceImpl userAccountService;
+    private AuthenticationServiceImpl authenticationService;
 
     private RegisterReq validRequest;
 
@@ -79,7 +78,7 @@ class UserAccountServiceImplTest {
             when(userAccountRepository.existsByUsername(anyString())).thenReturn(false);
             when(userAccountRepository.save(any(UserAccount.class))).thenReturn(saved);
 
-            RegisterRes result = userAccountService.register(validRequest);
+            RegisterRes result = authenticationService.register(validRequest);
 
             assertThat(result).isNotNull();
             assertThat(result.getUsername()).isEqualTo("testuser");
@@ -95,7 +94,7 @@ class UserAccountServiceImplTest {
             when(userAccountRepository.existsByUsername(anyString())).thenReturn(false);
             when(userAccountRepository.save(any(UserAccount.class))).thenReturn(mockSavedEntity());
 
-            userAccountService.register(validRequest);
+            authenticationService.register(validRequest);
 
             verify(userAccountRepository, times(1)).save(any(UserAccount.class));
         }
@@ -109,7 +108,7 @@ class UserAccountServiceImplTest {
             ArgumentCaptor<UserAccount> captor = ArgumentCaptor.forClass(UserAccount.class);
             when(userAccountRepository.save(captor.capture())).thenReturn(mockSavedEntity());
 
-            userAccountService.register(validRequest);
+            authenticationService.register(validRequest);
 
             UserAccount captured = captor.getValue();
             assertThat(captured.getUsername()).isEqualTo("testuser");
@@ -132,7 +131,7 @@ class UserAccountServiceImplTest {
             when(userAccountRepository.existsByEmail(validRequest.getEmail()))
                     .thenReturn(true);
 
-            assertThatThrownBy(() -> userAccountService.register(validRequest))
+            assertThatThrownBy(() -> authenticationService.register(validRequest))
                     .isInstanceOf(AppException.class)
                     .satisfies(ex -> {
                         AppException appException = (AppException) ex;
@@ -152,7 +151,7 @@ class UserAccountServiceImplTest {
             when(userAccountRepository.existsByUsername(validRequest.getUsername()))
                     .thenReturn(true);
 
-            assertThatThrownBy(() -> userAccountService.register(validRequest))
+            assertThatThrownBy(() -> authenticationService.register(validRequest))
                     .isInstanceOf(AppException.class)
                     .satisfies(ex -> {
                         AppException appException = (AppException) ex;
@@ -182,7 +181,7 @@ class UserAccountServiceImplTest {
             ArgumentCaptor<UserAccount> captor = ArgumentCaptor.forClass(UserAccount.class);
             when(userAccountRepository.save(captor.capture())).thenReturn(mockSavedEntity());
 
-            userAccountService.register(validRequest);
+            authenticationService.register(validRequest);
 
             UserAccount saved = captor.getValue();
             String rawPassword = validRequest.getPassword();
@@ -204,7 +203,7 @@ class UserAccountServiceImplTest {
             ArgumentCaptor<UserAccount> captor = ArgumentCaptor.forClass(UserAccount.class);
             when(userAccountRepository.save(captor.capture())).thenReturn(mockSavedEntity());
 
-            userAccountService.register(validRequest);
+            authenticationService.register(validRequest);
 
             UserAccount saved = captor.getValue();
 
@@ -231,7 +230,7 @@ class UserAccountServiceImplTest {
             when(userAccountRepository.existsByUsername(anyString())).thenReturn(false);
             when(userAccountRepository.save(any(UserAccount.class))).thenReturn(mockSavedEntity());
 
-            RegisterRes result = userAccountService.register(validRequest);
+            RegisterRes result = authenticationService.register(validRequest);
 
             assertThat(result.getUsername()).isEqualTo("testuser");
             assertThat(result.getEmail()).isEqualTo("test@example.com");
@@ -244,7 +243,7 @@ class UserAccountServiceImplTest {
             when(userAccountRepository.existsByUsername(anyString())).thenReturn(false);
             when(userAccountRepository.save(any(UserAccount.class))).thenReturn(mockSavedEntity());
 
-            RegisterRes result = userAccountService.register(validRequest);
+            RegisterRes result = authenticationService.register(validRequest);
 
             // RegisterRes chỉ có username, email, status → không có password field
             // Test này luôn pass do cấu trúc DTO

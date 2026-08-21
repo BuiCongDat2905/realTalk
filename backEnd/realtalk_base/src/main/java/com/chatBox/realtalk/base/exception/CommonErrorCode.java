@@ -47,6 +47,12 @@ public enum CommonErrorCode implements ErrorCode {
             "Giá trị enum không hợp lệ.",
             HttpStatus.BAD_REQUEST,
             ErrorType.VALIDATION_ERROR
+    ),
+    UNAUTHENTICATED(
+            "BASE-AUTH-01",
+            "Tài khoản chưa được xác thực.",
+            HttpStatus.UNAUTHORIZED,
+            ErrorType.AUTHENTICATION_ERROR
     );
 
     private final String code;

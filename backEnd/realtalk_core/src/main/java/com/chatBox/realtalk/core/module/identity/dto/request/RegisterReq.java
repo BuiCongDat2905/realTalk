@@ -61,6 +61,6 @@ public class RegisterReq {
             message = "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt."
     )
     private String password;
-    @NotNull(message = "Status không được để trống")
-    private UserStatus status;
+//    @NotNull(message = "Status không được để trống")
+//    private UserStatus status;
 }

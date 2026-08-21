@@ -3,6 +3,7 @@ package com.chatBox.realtalk.core.module.identity.controller;
 import com.chatBox.realtalk.core.module.identity.dto.request.RegisterReq;
 import com.chatBox.realtalk.core.module.identity.dto.response.RegisterRes;
 import com.chatBox.realtalk.core.module.identity.enums.UserStatus;
+import com.chatBox.realtalk.core.module.identity.service.AuthenticationService;
 import com.chatBox.realtalk.core.module.identity.service.UserAccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,7 @@ class AuthControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Mock
-    private UserAccountService userAccountService;
+    private AuthenticationService authenticationService;
 
     @InjectMocks
     private AuthController authController;
@@ -62,7 +63,7 @@ class AuthControllerTest {
                 .email("test@example.com")
                 .status(UserStatus.ACTIVE)
                 .build();
-        when(userAccountService.register(any(RegisterReq.class))).thenReturn(mockResponse);
+        when(authenticationService.register(any(RegisterReq.class))).thenReturn(mockResponse);
     }
 
     @Nested
@@ -99,7 +100,7 @@ class AuthControllerTest {
                             .content(objectMapper.writeValueAsString(validRequest)))
                     .andExpect(status().isOk());
 
-            verify(userAccountService, times(1)).register(any(RegisterReq.class));
+            verify(authenticationService, times(1)).register(any(RegisterReq.class));
         }
     }
 
@@ -116,7 +117,7 @@ class AuthControllerTest {
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.success").value(false));
 
-            verify(userAccountService, never()).register(any());
+            verify(authenticationService, never()).register(any());
         }
 
         @Test

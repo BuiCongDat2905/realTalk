@@ -63,6 +63,24 @@ public enum IdentityErrorCode implements ErrorCode {
             "Username đã tồn tại.",
             HttpStatus.CONFLICT,
             ErrorType.BUSINESS_ERROR
+    ),
+    LOGIN_USERNAME_NOT_EXISTS(
+            "REG-BUS-002",
+            "Username không tồn tại.",
+            HttpStatus.CONFLICT,
+            ErrorType.BUSINESS_ERROR
+    ),
+    LOGIN_PASSWORD_NOT_EXITS(
+            "LOGIN-BIZ-002",
+            "Password không chính xác.",
+            HttpStatus.CONFLICT,
+            ErrorType.BUSINESS_ERROR
+    ),
+    ROLE_NOT_EXIT(
+            "ROLE-BIZ-001",
+            "Quyền không tồn tại.",
+            HttpStatus.CONFLICT,
+            ErrorType.BUSINESS_ERROR
     )
     ;
 
